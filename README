@@ -1,0 +1,36 @@
+
+===== Problem examples =====
+
+Installing and loading the package, and then using the overloaded + operator
+doesn't seem to work right. It calls the normal arithemtic + operator, and
+gives a warning about incompatible methods.
+
+
+library(badadd)
+x <- structure(1, class = "a")
+y <- structure(2, class = "b")
+x + y
+# [1] 3
+# attr(,"class")
+# [1] "a"
+# Warning message:
+# Incompatible methods ("+.a", "+.b") for "+"
+
+# The two methods are identical
+identical(badadd:::`+.a`, badadd:::`+.b`)
+# [1] TRUE
+
+
+
+But if you just copy and paste the methods in to an R session, it works.
+
+
+`+.a` <- function (x1, x2) {
+    message("Running custom + function")
+}
+`+.b` <- `+.a`
+
+x + y
+# Running + function
+# NULL
+
